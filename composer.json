@@ -1,0 +1,17 @@
+{
+  "name": "shotbow/chatbot",
+  "description": "Chat Bot",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Navarr Barnier",
+      "email": "me@navarr.me"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "": "src/"
+    }
+  }
+}

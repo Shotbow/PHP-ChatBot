@@ -1,6 +1,6 @@
 <?php
 
-class Shotbow_ChatBot
+class Shotbow_ChatBot_Bot
 {
     const INFO_ID   = '1587103';
     const INFO_NAME = 'Chat Bot';
@@ -15,9 +15,8 @@ class Shotbow_ChatBot
         $this->postUrl = $postUrl;
     }
 
-    public function process($sender, $message)
+    public function process(Shotbow_ChatBot_User $sender, $message)
     {
-        $sender = trim($sender);
         if (substr($message, 0, 1) == '!') {
             // This might be a command.
             $separate  = explode(' ', $message, 2);
@@ -34,25 +33,26 @@ class Shotbow_ChatBot
     protected function postMessage($message, $name = null)
     {
         $name = is_null($name) ? static::INFO_NAME : $name;
+        $user = Shotbow_ChatBot_User::create(static::INFO_ID, $name);
 
         // Post to DB for website
         $stmt = $this->dbh->prepare(
             'INSERT INTO dark_taigachat (user_id,username,`date`,message,activity) VALUES (?,?,?,?,0)'
         );
-        $stmt->execute([static::INFO_ID, $name, time(), $message]);
+        $stmt->execute([static::INFO_ID, $user->getName(), time(), $message]);
 
-        $this->postToInternal($message, static::INFO_ID, $name);
+        $this->postToInternal($message, $user);
     }
 
-    private function postToInternal($message, $userId, $username, $channel = '#shoutbox')
+    private function postToInternal($message, Shotbow_ChatBot_User $user, $channel = '#shoutbox')
     {
         $internalFormatted = $message;
         $internalFormatted = preg_replace('#\[url=([^\]]+)\]([^\[]+)\[/url\]#', '<$1|$2>', $internalFormatted);
 
         $payload = json_encode(
             array(
-                'username' => $username,
-                'icon_url' => 'https://shotbow.net/forum/mobiquo/avatar.php?user_id=' . $userId,
+                'username' => $user->getName(),
+                'icon_url' => 'https://shotbow.net/forum/mobiquo/avatar.php?user_id=' . $user->getId(),
                 'text'     => $internalFormatted,
                 'channel'  => $channel,
             )
@@ -85,6 +85,11 @@ class Shotbow_ChatBot
         return isset($commands[$command]);
     }
 
+    /**
+     * @param $command
+     *
+     * @return callable
+     */
     protected function getCommandCallable($command)
     {
         $commands      = $this->getCommandList();
@@ -96,7 +101,7 @@ class Shotbow_ChatBot
 
     }
 
-    protected function command_commands($sender, $arguments)
+    protected function command_commands(Shotbow_ChatBot_User $sender, $arguments)
     {
         $commands = $this->getCommandList();
         $text = 'All Available Commands: ';
@@ -106,30 +111,19 @@ class Shotbow_ChatBot
         $this->postMessage($text);
     }
 
-    protected function command_banned($sender, $arguments)
+    protected function command_banned(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $to = $sender;
-        if (!is_null($arguments)) {
-            $to = $arguments;
-        }
-
         $message = 'We do not discuss bans in the chatroom.  Please [url=https://shotbow.net/forum/threads/23560/]Post an Appeal[/url].  It is the fastest way to get your ban handled.';
         $this->postMessage($message);
     }
 
-    protected function command_rules($sender, $arguments)
+    protected function command_rules(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $to = $sender;
-        if (!is_null($arguments)) {
-            $to = $arguments;
-        }
-
-
         $message = 'Please [url=https://shotbow.net/forum/p/rules/]Read our Rules[/url].';
         $this->postMessage($message);
     }
 
-    protected function command_xp($sender, $arguments)
+    protected function command_xp(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = 'We have a special xp code for people that ask!  Try IASKEDFORXP';
         $this->postMessage($message);
