@@ -11,7 +11,7 @@ class Shotbow_ChatBot_Bot
 
     public function __construct(PDO $databaseHandle, $postUrl)
     {
-        $this->dbh = $databaseHandle;
+        $this->dbh     = $databaseHandle;
         $this->postUrl = $postUrl;
     }
 
@@ -74,6 +74,7 @@ class Shotbow_ChatBot_Bot
                 'rules'    => [$this, 'command_rules'],
                 'banned'   => [$this, 'command_banned'],
                 'xp'       => [$this, 'command_xp'],
+                'report'   => [$this, 'command_report'],
             ];
         }
         return $this->commands;
@@ -92,7 +93,7 @@ class Shotbow_ChatBot_Bot
      */
     protected function getCommandCallable($command)
     {
-        $commands      = $this->getCommandList();
+        $commands = $this->getCommandList();
         return $this->commandExists($command) ? $commands[$command] : [$this, 'emptyCallback'];
     }
 
@@ -104,10 +105,15 @@ class Shotbow_ChatBot_Bot
     protected function command_commands(Shotbow_ChatBot_User $sender, $arguments)
     {
         $commands = $this->getCommandList();
-        $text = 'All Available Commands: ';
+        $text     = 'All Available Commands: ';
         $commands = array_keys($commands);
-        $commands = array_map(function($value) { return '!'.$value; }, $commands);
-        $text.= implode(', ',$commands);
+        $commands = array_map(
+            function ($value) {
+                return '!' . $value;
+            },
+            $commands
+        );
+        $text .= implode(', ', $commands);
         $this->postMessage($text);
     }
 
@@ -126,6 +132,13 @@ class Shotbow_ChatBot_Bot
     protected function command_xp(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = 'We have a special xp code for people that ask!  Try IASKEDFORXP';
+        $this->postMessage($message);
+    }
+
+    protected function command_report(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message
+            = 'To report a malicious player, follow [url=https://shotbow.net/forum/threads/167314/]our Report a Player instructions[/url]';
         $this->postMessage($message);
     }
 }
