@@ -130,6 +130,7 @@ class Shotbow_ChatBot_Bot
     protected function aliasExists($command)
     {
         $aliases = $this->getCommandAliases();
+        $commands = $this->getCommandList();
         return isset( $aliases[$command] ) && isset( $commands[$aliases[$command]] );
     }
 
