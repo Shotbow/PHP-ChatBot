@@ -2,11 +2,19 @@
 
 class Shotbow_ChatBot_Bot
 {
-    const INFO_ID   = '1587103';
+    const INFO_ID = '1587103';
     const INFO_NAME = 'Chat Bot';
 
+    /** @var array */
     private $commands;
+
+    /** @var array */
+    private $aliases;
+
+    /** @var PDO */
     private $dbh;
+
+    /** @var string */
     private $postUrl;
 
     public function __construct(PDO $databaseHandle, $postUrl)
@@ -21,8 +29,8 @@ class Shotbow_ChatBot_Bot
             // This might be a command.
             $separate  = explode(' ', $message, 2);
             $command   = substr($separate[0], 1);
-            $arguments = isset($separate[1]) ? $separate[1] : null;
-            if ($this->commandExists($command)) {
+            $arguments = isset( $separate[1] ) ? $separate[1] : null;
+            if ($this->commandExists($command) || $this->aliasExists($command)) {
                 // do rate limiting
                 $callable = $this->getCommandCallable($command);
                 $callable($sender, $arguments);
@@ -67,7 +75,7 @@ class Shotbow_ChatBot_Bot
 
     protected function getCommandList()
     {
-        if (!isset($this->commands)) {
+        if (!isset( $this->commands )) {
             $this->commands = [
                 //'help'     => [$this, 'command_help'],
                 'commands' => [$this, 'command_commands'],
@@ -75,15 +83,54 @@ class Shotbow_ChatBot_Bot
                 'banned'   => [$this, 'command_banned'],
                 'xp'       => [$this, 'command_xp'],
                 'report'   => [$this, 'command_report'],
+                'staff'    => [$this, 'command_staff'],
+                'social'   => [$this, 'command_social'],
+                'about'    => [$this, 'command_about'],
+                'bug'      => [$this, 'command_bug'],
+                'ts'       => [$this, 'command_teamspeak'],
+                'ip'       => [$this, 'command_ip'],
             ];
         }
         return $this->commands;
     }
 
+    protected function getCommandAliases()
+    {
+        if (!isset( $this->aliases )) {
+            $this->aliases = [
+                // Social Services
+                'twitter'    => 'social',
+                'facebook'   => 'social',
+                'youtube'    => 'social',
+                'googleplus' => 'social',
+                'gplus'      => 'social',
+                'youku'      => 'social',
+                'playerme'   => 'social',
+                'instagram'  => 'social',
+                'tumblr'     => 'social',
+
+                'source'    => 'about',
+                'bugs'      => 'bug',
+                'bugreport' => 'bug',
+                'address'   => 'ip',
+                'teamspeak' => 'ts',
+                'mumble'    => 'ts',
+            ];
+        }
+        return $this->aliases;
+    }
+
     protected function commandExists($command)
     {
         $commands = $this->getCommandList();
-        return isset($commands[$command]);
+
+        return isset( $commands[$command] );
+    }
+
+    protected function aliasExists($command)
+    {
+        $aliases = $this->getCommandAliases();
+        return isset( $aliases[$command] ) && isset( $commands[$aliases[$command]] );
     }
 
     /**
@@ -94,7 +141,14 @@ class Shotbow_ChatBot_Bot
     protected function getCommandCallable($command)
     {
         $commands = $this->getCommandList();
-        return $this->commandExists($command) ? $commands[$command] : [$this, 'emptyCallback'];
+        $aliases  = $this->getCommandAliases();
+        if ($this->commandExists($command)) {
+            return $commands[$command];
+        }
+        if ($this->aliasExists($command)) {
+            return $commands[$aliases[$command]];
+        }
+        return [$this, 'emptyCallback'];
     }
 
     protected function emptyCallback($sender, $arguments)
@@ -139,6 +193,61 @@ class Shotbow_ChatBot_Bot
     {
         $message
             = 'To report a malicious player, follow [url=https://shotbow.net/forum/threads/167314/]our Report a Player instructions[/url]';
+        $this->postMessage($message);
+    }
+
+    protected function command_staff(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = 'Our Wiki Moderators maintain an unofficial [url=https://shotbow.net/forum/wiki/shotbow-staff]list of staff[/url]';
+        $this->postMessage($message);
+    }
+
+    protected function command_social(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $profiles = [
+            'Facebook' => 'https://facebook.com/TheShotbowNetwork',
+            'Twitter' => 'https://twitter.com/ShotbowNetwork',
+            'Google+' => 'https://google.com/+TheShotbowNetwork',
+            'YouTube' => 'https://gaming.youtube.com/user/ShotBowNetwork',
+            'Player.me' => 'https://player.me/?invite=shotbow',
+            'Instagram' => 'https://instagram.com/shotbownetworkmc/',
+            'Tumblr' => 'http://tumblr.shotbow.net/',
+            'Youku' => 'http://i.youku.com/shotbow',
+        ];
+
+        $urlProfiles = [];
+        foreach ($profiles as $name => $link) {
+            $urlProfiles[] = "[URL={$link}]{$name}[/URL]";
+        }
+        $lastProfile = array_splice($urlProfiles, -1);
+        $profileString = implode(', ', $urlProfiles);
+        $profileString.= ', or '.$lastProfile;
+
+        $message = "Follow us online at {$profileString}.";
+        $this->postMessage($message);
+    }
+
+    protected function command_about(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = "I'm an Open-Sourced Bot here to help you!  You can view my code and contribute to me [url=https://github.com/shotbow/chatbot]on github[/url].";
+        $this->postMessage($message);
+    }
+
+    protected function command_bug(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = "Help keep our games stable by [url=https://shotbow.net/forum/link-forums/report-a-bug.670/]Reporting Bugs[/url].";
+        $this->postMessage($message);
+    }
+
+    protected function command_teamspeak(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = "You can [url=https://shotbow.net/forum/wiki/shotbow-teamspeak/]Connect to our Teamspeak Server[/url] at ts.shotbow.net";
+        $this->postMessage($message);
+    }
+
+    protected function command_ip(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = "Connect to us on US.SHOTBOW.NET or EU.SHOTBOW.NET.  Having Trouble?  [url=https://shotbow.net/forum/threads/having-trouble-connecting-to-us-or-eu-read-this.229762/]Try these steps[/url].";
         $this->postMessage($message);
     }
 }
