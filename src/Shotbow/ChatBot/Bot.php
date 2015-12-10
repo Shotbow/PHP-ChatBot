@@ -55,7 +55,7 @@ class Shotbow_ChatBot_Bot
     private function postToInternal($message, Shotbow_ChatBot_User $user, $channel = '#shoutbox')
     {
         $internalFormatted = $message;
-        $internalFormatted = preg_replace('#\[url=([^\]]+)\]([^\[]+)\[/url\]#', '<$1|$2>', $internalFormatted);
+        $internalFormatted = preg_replace('#\[url=([^\]]+)\]([^\[]+)\[/url\]#i', '<$1|$2>', $internalFormatted);
 
         $payload = json_encode(
             array(
