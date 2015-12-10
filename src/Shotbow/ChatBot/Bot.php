@@ -221,7 +221,7 @@ class Shotbow_ChatBot_Bot
         }
         $lastProfile = array_splice($urlProfiles, -1);
         $profileString = implode(', ', $urlProfiles);
-        $profileString.= ', or '.$lastProfile;
+        $profileString.= ', or '.$lastProfile[0];
 
         $message = "Follow us online at {$profileString}.";
         $this->postMessage($message);
