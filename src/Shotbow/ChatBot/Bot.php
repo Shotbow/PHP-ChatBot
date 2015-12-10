@@ -245,7 +245,7 @@ class Shotbow_ChatBot_Bot
         $profileString = implode(', ', $urlVotes);
         $profileString .= ', and ' . $lastProfile[0];
 
-        $message = "Vote for our network at {$profileString}.";
+        $message = "Vote for our network on {$profileString}.";
 
         $this->postMessage($message);
     }
