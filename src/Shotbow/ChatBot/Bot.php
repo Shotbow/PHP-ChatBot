@@ -89,6 +89,7 @@ class Shotbow_ChatBot_Bot
                 'bug'      => [$this, 'command_bug'],
                 'ts'       => [$this, 'command_teamspeak'],
                 'ip'       => [$this, 'command_ip'],
+                'vote'     => [$this, 'command_vote'],
             ];
         }
         return $this->commands;
@@ -129,7 +130,7 @@ class Shotbow_ChatBot_Bot
 
     protected function aliasExists($command)
     {
-        $aliases = $this->getCommandAliases();
+        $aliases  = $this->getCommandAliases();
         $commands = $this->getCommandList();
         return isset( $aliases[$command] ) && isset( $commands[$aliases[$command]] );
     }
@@ -206,25 +207,46 @@ class Shotbow_ChatBot_Bot
     protected function command_social(Shotbow_ChatBot_User $sender, $arguments)
     {
         $profiles = [
-            'Facebook' => 'https://facebook.com/TheShotbowNetwork',
-            'Twitter' => 'https://twitter.com/ShotbowNetwork',
-            'Google+' => 'https://google.com/+TheShotbowNetwork',
-            'YouTube' => 'https://gaming.youtube.com/user/ShotBowNetwork',
+            'Facebook'  => 'https://facebook.com/TheShotbowNetwork',
+            'Twitter'   => 'https://twitter.com/ShotbowNetwork',
+            'Google+'   => 'https://google.com/+TheShotbowNetwork',
+            'YouTube'   => 'https://gaming.youtube.com/user/ShotBowNetwork',
             'Player.me' => 'https://player.me/?invite=shotbow',
             'Instagram' => 'https://instagram.com/shotbownetworkmc/',
-            'Tumblr' => 'http://tumblr.shotbow.net/',
-            'Youku' => 'http://i.youku.com/shotbow',
+            'Tumblr'    => 'http://tumblr.shotbow.net/',
+            'Youku'     => 'http://i.youku.com/shotbow',
         ];
 
         $urlProfiles = [];
         foreach ($profiles as $name => $link) {
             $urlProfiles[] = "[URL={$link}]{$name}[/URL]";
         }
-        $lastProfile = array_splice($urlProfiles, -1);
+        $lastProfile   = array_splice($urlProfiles, -1);
         $profileString = implode(', ', $urlProfiles);
-        $profileString.= ', or '.$lastProfile[0];
+        $profileString .= ', or ' . $lastProfile[0];
 
         $message = "Follow us online at {$profileString}.";
+        $this->postMessage($message);
+    }
+
+    protected function command_vote(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $votes = [
+            'Planet Minecraft'     => 'http://www.planetminecraft.com/server/minez-1398788/',
+            'Minecraft Forum'      => 'http://minecraftforum.net/servers/160-shotbow',
+            'MinecraftServers.org' => 'http://minecraftservers.org/server/267066',
+        ];
+
+        $urlVotes = [];
+        foreach ($votes as $name => $link) {
+            $urlVotes[] = "[URL={$link}]{$name}[/URL]";
+        }
+        $lastProfile   = array_splice($urlVotes, -1);
+        $profileString = implode(', ', $urlVotes);
+        $profileString .= ', and ' . $lastProfile[0];
+
+        $message = "Vote for our network at {$profileString}.";
+
         $this->postMessage($message);
     }
 
