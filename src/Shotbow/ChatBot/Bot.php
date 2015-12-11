@@ -2,7 +2,7 @@
 
 class Shotbow_ChatBot_Bot
 {
-    const INFO_ID = '1587103';
+    const INFO_ID   = '1587103';
     const INFO_NAME = 'Chat Bot';
 
     /** @var array */
@@ -29,7 +29,7 @@ class Shotbow_ChatBot_Bot
             // This might be a command.
             $separate  = explode(' ', $message, 2);
             $command   = substr($separate[0], 1);
-            $arguments = isset( $separate[1] ) ? $separate[1] : null;
+            $arguments = isset($separate[1]) ? $separate[1] : null;
             if ($this->commandExists($command) || $this->aliasExists($command)) {
                 // do rate limiting
                 $callable = $this->getCommandCallable($command);
@@ -75,7 +75,7 @@ class Shotbow_ChatBot_Bot
 
     protected function getCommandList()
     {
-        if (!isset( $this->commands )) {
+        if (!isset($this->commands)) {
             $this->commands = [
                 //'help'     => [$this, 'command_help'],
                 'commands' => [$this, 'command_commands'],
@@ -97,7 +97,7 @@ class Shotbow_ChatBot_Bot
 
     protected function getCommandAliases()
     {
-        if (!isset( $this->aliases )) {
+        if (!isset($this->aliases)) {
             $this->aliases = [
                 // Social Services
                 'twitter'    => 'social',
@@ -125,14 +125,14 @@ class Shotbow_ChatBot_Bot
     {
         $commands = $this->getCommandList();
 
-        return isset( $commands[$command] );
+        return isset($commands[$command]);
     }
 
     protected function aliasExists($command)
     {
         $aliases  = $this->getCommandAliases();
         $commands = $this->getCommandList();
-        return isset( $aliases[$command] ) && isset( $commands[$aliases[$command]] );
+        return isset($aliases[$command]) && isset($commands[$aliases[$command]]);
     }
 
     /**
@@ -175,7 +175,8 @@ class Shotbow_ChatBot_Bot
 
     protected function command_banned(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = 'We do not discuss bans in the chatroom.  Please [url=https://shotbow.net/forum/threads/23560/]Post an Appeal[/url].  It is the fastest way to get your ban handled.';
+        $message
+            = 'We do not discuss bans in the chatroom.  Please [url=https://shotbow.net/forum/threads/23560/]Post an Appeal[/url].  It is the fastest way to get your ban handled.';
         $this->postMessage($message);
     }
 
@@ -194,13 +195,14 @@ class Shotbow_ChatBot_Bot
     protected function command_report(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message
-            = 'To report a malicious player, follow [url=https://shotbow.net/forum/threads/167314/]our Report a Player instructions[/url]';
+            = 'To report a malicious player, follow [url=https://shotbow.net/forum/threads/167314/]our Report a Player instructions[/url].  Are they in game right now?  Type /report <name> to report them to our currently active staff!';
         $this->postMessage($message);
     }
 
     protected function command_staff(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = 'Our Wiki Moderators maintain an unofficial [url=https://shotbow.net/forum/wiki/shotbow-staff]list of staff[/url]';
+        $message
+            = 'Our Wiki Moderators maintain an unofficial [url=https://shotbow.net/forum/wiki/shotbow-staff]list of staff[/url]';
         $this->postMessage($message);
     }
 
@@ -252,25 +254,29 @@ class Shotbow_ChatBot_Bot
 
     protected function command_about(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = "I'm an Open-Sourced Bot here to help you!  You can view my code and contribute to me [url=https://github.com/shotbow/chatbot]on github[/url].";
+        $message
+            = "I'm an Open-Sourced Bot here to help you!  You can view my code and contribute to me [url=https://github.com/shotbow/chatbot]on github[/url].";
         $this->postMessage($message);
     }
 
     protected function command_bug(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = "Help keep our games stable by [url=https://shotbow.net/forum/link-forums/report-a-bug.670/]Reporting Bugs[/url].";
+        $message
+            = "Help keep our games stable by [url=https://shotbow.net/forum/link-forums/report-a-bug.670/]Reporting Bugs[/url].";
         $this->postMessage($message);
     }
 
     protected function command_teamspeak(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = "You can [url=https://shotbow.net/forum/wiki/shotbow-teamspeak/]Connect to our Teamspeak Server[/url] at ts.shotbow.net";
+        $message
+            = "You can [url=https://shotbow.net/forum/wiki/shotbow-teamspeak/]Connect to our Teamspeak Server[/url] at ts.shotbow.net";
         $this->postMessage($message);
     }
 
     protected function command_ip(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = "Connect to us on US.SHOTBOW.NET or EU.SHOTBOW.NET.  Having Trouble?  [url=https://shotbow.net/forum/threads/having-trouble-connecting-to-us-or-eu-read-this.229762/]Try these steps[/url].";
+        $message
+            = "Connect to us on US.SHOTBOW.NET or EU.SHOTBOW.NET.  Having Trouble?  [url=https://shotbow.net/forum/threads/having-trouble-connecting-to-us-or-eu-read-this.229762/]Try these steps[/url].";
         $this->postMessage($message);
     }
 }
