@@ -13,5 +13,14 @@
     "psr-0": {
       "": "src/"
     }
+  },
+  "require-dev": {
+    "phpmd/phpmd": "~2.1",
+    "phpunit/phpunit": "~5.0"
+  },
+  "scripts": {
+    "test": [
+      "phpmd src/ text cleancode codesize design naming unusedcode"
+    ]
   }
 }
