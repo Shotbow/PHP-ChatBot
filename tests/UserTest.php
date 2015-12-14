@@ -1,4 +1,5 @@
 <?php
+
 namespace Shotbow\ChatBot;
 
 class UserTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +21,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $user = \Shotbow_ChatBot_User::create(2, 'lazertester');
 
-        $stringified = (string)$user;
+        $stringified = (string) $user;
 
         $this->assertEquals('lazertester', $stringified);
     }

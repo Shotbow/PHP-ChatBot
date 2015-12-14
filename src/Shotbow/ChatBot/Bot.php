@@ -2,7 +2,7 @@
 
 class Shotbow_ChatBot_Bot
 {
-    const INFO_ID   = '1587103';
+    const INFO_ID = '1587103';
     const INFO_NAME = 'Chat Bot';
 
     /** @var array */
@@ -19,7 +19,7 @@ class Shotbow_ChatBot_Bot
 
     public function __construct(PDO $databaseHandle, $postUrl)
     {
-        $this->dbh     = $databaseHandle;
+        $this->dbh = $databaseHandle;
         $this->postUrl = $postUrl;
     }
 
@@ -27,8 +27,8 @@ class Shotbow_ChatBot_Bot
     {
         if (substr($message, 0, 1) == '!') {
             // This might be a command.
-            $separate  = explode(' ', $message, 2);
-            $command   = substr($separate[0], 1);
+            $separate = explode(' ', $message, 2);
+            $command = substr($separate[0], 1);
             $arguments = isset($separate[1]) ? $separate[1] : null;
             if ($this->commandExists($command) || $this->aliasExists($command)) {
                 // do rate limiting
@@ -58,18 +58,18 @@ class Shotbow_ChatBot_Bot
         $internalFormatted = preg_replace('#\[url=([^\]]+)\]([^\[]+)\[/url\]#i', '<$1|$2>', $internalFormatted);
 
         $payload = json_encode(
-            array(
+            [
                 'username' => $user->getName(),
-                'icon_url' => 'https://shotbow.net/forum/mobiquo/avatar.php?user_id=' . $user->getId(),
+                'icon_url' => 'https://shotbow.net/forum/mobiquo/avatar.php?user_id='.$user->getId(),
                 'text'     => $internalFormatted,
                 'channel'  => $channel,
-            )
+            ]
         );
 
         $ch = @curl_init($this->postUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, 'payload=' . $payload);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, 'payload='.$payload);
         curl_exec($ch);
     }
 
@@ -92,6 +92,7 @@ class Shotbow_ChatBot_Bot
                 'vote'     => [$this, 'command_vote'],
             ];
         }
+
         return $this->commands;
     }
 
@@ -118,6 +119,7 @@ class Shotbow_ChatBot_Bot
                 'mumble'    => 'ts',
             ];
         }
+
         return $this->aliases;
     }
 
@@ -130,8 +132,9 @@ class Shotbow_ChatBot_Bot
 
     protected function aliasExists($command)
     {
-        $aliases  = $this->getCommandAliases();
+        $aliases = $this->getCommandAliases();
         $commands = $this->getCommandList();
+
         return isset($aliases[$command]) && isset($commands[$aliases[$command]]);
     }
 
@@ -143,29 +146,29 @@ class Shotbow_ChatBot_Bot
     protected function getCommandCallable($command)
     {
         $commands = $this->getCommandList();
-        $aliases  = $this->getCommandAliases();
+        $aliases = $this->getCommandAliases();
         if ($this->commandExists($command)) {
             return $commands[$command];
         }
         if ($this->aliasExists($command)) {
             return $commands[$aliases[$command]];
         }
+
         return [$this, 'emptyCallback'];
     }
 
     protected function emptyCallback($sender, $arguments)
     {
-
     }
 
     protected function command_commands(Shotbow_ChatBot_User $sender, $arguments)
     {
         $commands = $this->getCommandList();
-        $text     = 'All Available Commands: ';
+        $text = 'All Available Commands: ';
         $commands = array_keys($commands);
         $commands = array_map(
             function ($value) {
-                return '!' . $value;
+                return '!'.$value;
             },
             $commands
         );
@@ -223,9 +226,9 @@ class Shotbow_ChatBot_Bot
         foreach ($profiles as $name => $link) {
             $urlProfiles[] = "[URL={$link}]{$name}[/URL]";
         }
-        $lastProfile   = array_splice($urlProfiles, -1);
+        $lastProfile = array_splice($urlProfiles, -1);
         $profileString = implode(', ', $urlProfiles);
-        $profileString .= ', or ' . $lastProfile[0];
+        $profileString .= ', or '.$lastProfile[0];
 
         $message = "Follow us online at {$profileString}.";
         $this->postMessage($message);
@@ -243,9 +246,9 @@ class Shotbow_ChatBot_Bot
         foreach ($votes as $name => $link) {
             $urlVotes[] = "[URL={$link}]{$name}[/URL]";
         }
-        $lastProfile   = array_splice($urlVotes, -1);
+        $lastProfile = array_splice($urlVotes, -1);
         $profileString = implode(', ', $urlVotes);
-        $profileString .= ', and ' . $lastProfile[0];
+        $profileString .= ', and '.$lastProfile[0];
 
         $message = "Vote for our network on {$profileString}.";
 
@@ -262,21 +265,21 @@ class Shotbow_ChatBot_Bot
     protected function command_bug(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message
-            = "Help keep our games stable by [url=https://shotbow.net/forum/link-forums/report-a-bug.670/]Reporting Bugs[/url].";
+            = 'Help keep our games stable by [url=https://shotbow.net/forum/link-forums/report-a-bug.670/]Reporting Bugs[/url].';
         $this->postMessage($message);
     }
 
     protected function command_teamspeak(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message
-            = "You can [url=https://shotbow.net/forum/wiki/shotbow-teamspeak/]Connect to our Teamspeak Server[/url] at ts.shotbow.net";
+            = 'You can [url=https://shotbow.net/forum/wiki/shotbow-teamspeak/]Connect to our Teamspeak Server[/url] at ts.shotbow.net';
         $this->postMessage($message);
     }
 
     protected function command_ip(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message
-            = "Connect to us on US.SHOTBOW.NET or EU.SHOTBOW.NET.  Having Trouble?  [url=https://shotbow.net/forum/threads/having-trouble-connecting-to-us-or-eu-read-this.229762/]Try these steps[/url].";
+            = 'Connect to us on US.SHOTBOW.NET or EU.SHOTBOW.NET.  Having Trouble?  [url=https://shotbow.net/forum/threads/having-trouble-connecting-to-us-or-eu-read-this.229762/]Try these steps[/url].';
         $this->postMessage($message);
     }
 }
