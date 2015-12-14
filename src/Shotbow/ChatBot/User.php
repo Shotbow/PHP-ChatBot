@@ -7,7 +7,7 @@ class Shotbow_ChatBot_User
 
     private function __construct($id, $name)
     {
-        $this->xenforoId   = $id;
+        $this->xenforoId = $id;
         $this->xenforoName = trim($name);
     }
 
