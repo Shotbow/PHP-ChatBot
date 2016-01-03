@@ -90,6 +90,7 @@ class Shotbow_ChatBot_Bot
                 'ts'       => [$this, 'command_teamspeak'],
                 'ip'       => [$this, 'command_ip'],
                 'vote'     => [$this, 'command_vote'],
+                'mcstatus' => [$this, 'command_mcstatus'],
             ];
         }
 
@@ -280,6 +281,12 @@ class Shotbow_ChatBot_Bot
     {
         $message
             = 'Connect to us on US.SHOTBOW.NET or EU.SHOTBOW.NET.  Having Trouble?  [url=https://shotbow.net/forum/threads/having-trouble-connecting-to-us-or-eu-read-this.229762/]Try these steps[/url].';
+        $this->postMessage($message);
+    }
+
+    protected function command_mcstatus(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = "Sometimes it's Mojang.  [url=http://xpaw.ru/mcstatus/]Have you checked?[/url]";
         $this->postMessage($message);
     }
 }
