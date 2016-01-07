@@ -141,6 +141,8 @@ class Shotbow_ChatBot_Bot
                 'mumble'    => 'ts',
 
                 'test' => 'ping',
+
+                'createminezeventplease' => 'createminezevent',
             ];
         }
 
