@@ -69,8 +69,8 @@ class Shotbow_ChatBot_Bot
             [
                 'username' => $user->getName(),
                 'icon_url' => 'https://shotbow.net/forum/mobiquo/avatar.php?user_id='.$user->getId(),
-                'text'     => $internalFormatted,
-                'channel'  => $channel,
+                'text' => $internalFormatted,
+                'channel' => $channel,
             ]
         );
 
@@ -87,17 +87,17 @@ class Shotbow_ChatBot_Bot
             $this->commands = [
                 //'help'     => [$this, 'command_help'],
                 'commands' => [$this, 'command_commands'],
-                'rules'    => [$this, 'command_rules'],
-                'banned'   => [$this, 'command_banned'],
-                'xp'       => [$this, 'command_xp'],
-                'report'   => [$this, 'command_report'],
-                'staff'    => [$this, 'command_staff'],
-                'social'   => [$this, 'command_social'],
-                'about'    => [$this, 'command_about'],
-                'bug'      => [$this, 'command_bug'],
-                'ts'       => [$this, 'command_teamspeak'],
-                'ip'       => [$this, 'command_ip'],
-                'vote'     => [$this, 'command_vote'],
+                'rules' => [$this, 'command_rules'],
+                'banned' => [$this, 'command_banned'],
+                'xp' => [$this, 'command_xp'],
+                'report' => [$this, 'command_report'],
+                'staff' => [$this, 'command_staff'],
+                'social' => [$this, 'command_social'],
+                'about' => [$this, 'command_about'],
+                'bug' => [$this, 'command_bug'],
+                'ts' => [$this, 'command_teamspeak'],
+                'ip' => [$this, 'command_ip'],
+                'vote' => [$this, 'command_vote'],
                 'mcstatus' => [$this, 'command_mcstatus'],
             ];
         }
@@ -110,6 +110,7 @@ class Shotbow_ChatBot_Bot
         if (!isset($this->hiddenCommands)) {
             $this->hiddenCommands = [
                 'createminezevent' => [$this, 'command_createMineZEvent'],
+                'ping' => [$this, 'command_ping'],
             ];
         }
 
@@ -121,22 +122,24 @@ class Shotbow_ChatBot_Bot
         if (!isset($this->aliases)) {
             $this->aliases = [
                 // Social Services
-                'twitter'    => 'social',
-                'facebook'   => 'social',
-                'youtube'    => 'social',
+                'twitter' => 'social',
+                'facebook' => 'social',
+                'youtube' => 'social',
                 'googleplus' => 'social',
-                'gplus'      => 'social',
-                'youku'      => 'social',
-                'playerme'   => 'social',
-                'instagram'  => 'social',
-                'tumblr'     => 'social',
+                'gplus' => 'social',
+                'youku' => 'social',
+                'playerme' => 'social',
+                'instagram' => 'social',
+                'tumblr' => 'social',
 
-                'source'    => 'about',
-                'bugs'      => 'bug',
+                'source' => 'about',
+                'bugs' => 'bug',
                 'bugreport' => 'bug',
-                'address'   => 'ip',
+                'address' => 'ip',
                 'teamspeak' => 'ts',
-                'mumble'    => 'ts',
+                'mumble' => 'ts',
+
+                'test' => 'ping',
             ];
         }
 
@@ -228,7 +231,7 @@ class Shotbow_ChatBot_Bot
         $text = 'All Available Commands: ';
         $commands = array_keys($commands);
         $commands = array_map(
-            function ($value) {
+            function($value) {
                 return '!'.$value;
             },
             $commands
@@ -273,14 +276,14 @@ class Shotbow_ChatBot_Bot
     protected function command_social(Shotbow_ChatBot_User $sender, $arguments)
     {
         $profiles = [
-            'Facebook'  => 'https://facebook.com/TheShotbowNetwork',
-            'Twitter'   => 'https://twitter.com/ShotbowNetwork',
-            'Google+'   => 'https://google.com/+TheShotbowNetwork',
-            'YouTube'   => 'https://gaming.youtube.com/user/ShotBowNetwork',
+            'Facebook' => 'https://facebook.com/TheShotbowNetwork',
+            'Twitter' => 'https://twitter.com/ShotbowNetwork',
+            'Google+' => 'https://google.com/+TheShotbowNetwork',
+            'YouTube' => 'https://gaming.youtube.com/user/ShotBowNetwork',
             'Player.me' => 'https://player.me/?invite=shotbow',
             'Instagram' => 'https://instagram.com/shotbownetworkmc/',
-            'Tumblr'    => 'http://tumblr.shotbow.net/',
-            'Youku'     => 'http://i.youku.com/shotbow',
+            'Tumblr' => 'http://tumblr.shotbow.net/',
+            'Youku' => 'http://i.youku.com/shotbow',
         ];
 
         $urlProfiles = [];
@@ -298,8 +301,8 @@ class Shotbow_ChatBot_Bot
     protected function command_vote(Shotbow_ChatBot_User $sender, $arguments)
     {
         $votes = [
-            'Planet Minecraft'     => 'http://www.planetminecraft.com/server/minez-1398788/',
-            'Minecraft Forum'      => 'http://minecraftforum.net/servers/160-shotbow',
+            'Planet Minecraft' => 'http://www.planetminecraft.com/server/minez-1398788/',
+            'Minecraft Forum' => 'http://minecraftforum.net/servers/160-shotbow',
             'MinecraftServers.org' => 'http://minecraftservers.org/server/267066',
         ];
 
@@ -353,6 +356,15 @@ class Shotbow_ChatBot_Bot
     protected function command_createMineZEvent(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = "No.  That's not how this works.  Staff run events in their spare time.";
+        $this->postMessage($message);
+    }
+
+    protected function command_ping(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $tz = new DateTimeZone('America/Chicago');
+        $date = new DateTimeImmutable('now', $tz);
+
+        $message = 'I received your command at '.$date->format('H:i:s').' my time.';
         $this->postMessage($message);
     }
 }
