@@ -31,7 +31,7 @@ class Shotbow_ChatBot_Bot
         if (substr($message, 0, 1) == '!') {
             // This might be a command.
             $separate = explode(' ', $message, 2);
-            $command = substr($separate[0], 1);
+            $command = strtolower(substr($separate[0], 1));
             $arguments = isset($separate[1]) ? $separate[1] : null;
             if ($this->commandNameExists($command)) {
                 // do rate limiting
