@@ -143,7 +143,9 @@ class Shotbow_ChatBot_Bot
 
                 'test' => 'ping',
 
-                'createminezeventplease' => 'createminezevent',
+                'createminezeventplease'  => 'createminezevent',
+                'createannihilationevent' => 'createminezevent',
+                'createannievent'         => 'createminezevent',
             ];
         }
 
