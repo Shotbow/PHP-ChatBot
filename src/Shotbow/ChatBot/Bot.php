@@ -9,6 +9,9 @@ class Shotbow_ChatBot_Bot
     private $commands;
 
     /** @var array */
+    private $hiddenCommands;
+
+    /** @var array */
     private $aliases;
 
     /** @var PDO */
@@ -30,12 +33,17 @@ class Shotbow_ChatBot_Bot
             $separate = explode(' ', $message, 2);
             $command = substr($separate[0], 1);
             $arguments = isset($separate[1]) ? $separate[1] : null;
-            if ($this->commandExists($command) || $this->aliasExists($command)) {
+            if ($this->commandNameExists($command)) {
                 // do rate limiting
                 $callable = $this->getCommandCallable($command);
                 $callable($sender, $arguments);
             }
         }
+    }
+
+    protected function commandNameExists($command)
+    {
+        return $this->commandExists($command) || $this->hiddenCommandExists($command) || $this->aliasExists($command);
     }
 
     protected function postMessage($message, $name = null)
@@ -93,8 +101,18 @@ class Shotbow_ChatBot_Bot
                 'mcstatus' => [$this, 'command_mcstatus'],
             ];
         }
-
         return $this->commands;
+    }
+
+    protected function getHiddenCommandList()
+    {
+        if (!isset($this->hiddenCommands)) {
+            $this->hiddenCommands = [
+                'createminezevent' => [$this, 'command_createMineZEvent'],
+            ];
+        }
+
+        return $this->hiddenCommands;
     }
 
     protected function getCommandAliases()
@@ -120,7 +138,6 @@ class Shotbow_ChatBot_Bot
                 'mumble'    => 'ts',
             ];
         }
-
         return $this->aliases;
     }
 
@@ -131,12 +148,45 @@ class Shotbow_ChatBot_Bot
         return isset($commands[$command]);
     }
 
-    protected function aliasExists($command)
+    protected function hiddenCommandExists($command)
+    {
+        $commands = $this->getHiddenCommandList();
+
+        return isset($commands[$command]);
+    }
+
+    protected function resolveAlias($alias)
     {
         $aliases = $this->getCommandAliases();
-        $commands = $this->getCommandList();
+        if (!isset($aliases[$alias])) {
+            return null;
+        }
 
-        return isset($aliases[$command]) && isset($commands[$aliases[$command]]);
+        return $aliases[$alias];
+    }
+
+    protected function aliasExists($command)
+    {
+        $command = $this->resolveAlias($command);
+        $commands = $this->getCommandList();
+        $hiddenCommands = $this->getHiddenCommandList();
+
+        return !is_null($command) && (isset($commands[$command]) || isset($hiddenCommands[$command]));
+    }
+
+    protected function getAliasCallable($command)
+    {
+        $commands = $this->getCommandList();
+        $hiddenCommands = $this->getHiddenCommandList();
+
+        $trueCommand = $this->resolveAlias($command);
+
+        if ($this->commandExists($trueCommand)) {
+            return $this->getCallableFromCommandArray($commands, $trueCommand);
+        }
+        if ($this->hiddenCommandExists($trueCommand)) {
+            return $this->getCallableFromCommandArray($hiddenCommands, $trueCommand);
+        }
     }
 
     /**
@@ -147,19 +197,28 @@ class Shotbow_ChatBot_Bot
     protected function getCommandCallable($command)
     {
         $commands = $this->getCommandList();
-        $aliases = $this->getCommandAliases();
+        $hiddenCommands = $this->getHiddenCommandList();
         if ($this->commandExists($command)) {
-            return $commands[$command];
+            return $this->getCallableFromCommandArray($commands, $command);
+        }
+        if ($this->hiddenCommandExists($command)) {
+            return $this->getCallableFromCommandArray($hiddenCommands, $command);
         }
         if ($this->aliasExists($command)) {
-            return $commands[$aliases[$command]];
+            return $this->getCommandCallable($this->resolveAlias($command));
         }
 
         return [$this, 'emptyCallback'];
     }
 
+    protected function getCallableFromCommandArray(array $array, $command)
+    {
+        return $array[$command];
+    }
+
     protected function emptyCallback($sender, $arguments)
     {
+
     }
 
     protected function command_commands(Shotbow_ChatBot_User $sender, $arguments)
@@ -287,6 +346,12 @@ class Shotbow_ChatBot_Bot
     protected function command_mcstatus(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = "Sometimes it's Mojang.  [url=http://xpaw.ru/mcstatus/]Have you checked?[/url]";
+        $this->postMessage($message);
+    }
+
+    protected function command_createMineZEvent(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = "No.  That's not how this works.  Staff run events in their spare time.";
         $this->postMessage($message);
     }
 }
