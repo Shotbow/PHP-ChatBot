@@ -99,6 +99,7 @@ class Shotbow_ChatBot_Bot
                 'ip'       => [$this, 'command_ip'],
                 'vote'     => [$this, 'command_vote'],
                 'mcstatus' => [$this, 'command_mcstatus'],
+                'radio'    => [$this, 'command_radio'],
             ];
         }
 
@@ -375,5 +376,11 @@ class Shotbow_ChatBot_Bot
     {
         $this->postMessage('I try not to be violent.. but you all just keep pushing me...');
         $this->postMessage('zaps '.$sender->getName().' with an electric shock!');
+    }
+
+    protected function command_radio(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = "Did you know we have our own Radio?  [url=http://minetheftauto.com/radio]Listen to Mine Theft Auto's Radio![/url]";
+        $this->postMessage($message);
     }
 }
