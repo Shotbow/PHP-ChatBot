@@ -231,7 +231,7 @@ class Shotbow_ChatBot_Bot
         $text = 'All Available Commands: ';
         $commands = array_keys($commands);
         $commands = array_map(
-            function($value) {
+            function ($value) {
                 return '!'.$value;
             },
             $commands
