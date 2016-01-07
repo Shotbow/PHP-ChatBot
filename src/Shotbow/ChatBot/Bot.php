@@ -101,6 +101,7 @@ class Shotbow_ChatBot_Bot
                 'mcstatus' => [$this, 'command_mcstatus'],
             ];
         }
+
         return $this->commands;
     }
 
@@ -138,6 +139,7 @@ class Shotbow_ChatBot_Bot
                 'mumble'    => 'ts',
             ];
         }
+
         return $this->aliases;
     }
 
@@ -159,7 +161,7 @@ class Shotbow_ChatBot_Bot
     {
         $aliases = $this->getCommandAliases();
         if (!isset($aliases[$alias])) {
-            return null;
+            return;
         }
 
         return $aliases[$alias];
@@ -218,7 +220,6 @@ class Shotbow_ChatBot_Bot
 
     protected function emptyCallback($sender, $arguments)
     {
-
     }
 
     protected function command_commands(Shotbow_ChatBot_User $sender, $arguments)
