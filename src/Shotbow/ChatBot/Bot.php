@@ -111,6 +111,7 @@ class Shotbow_ChatBot_Bot
             $this->hiddenCommands = [
                 'createminezevent' => [$this, 'command_createMineZEvent'],
                 'ping'             => [$this, 'command_ping'],
+                'fry'              => [$this, 'command_fry'],
             ];
         }
 
@@ -366,5 +367,11 @@ class Shotbow_ChatBot_Bot
 
         $message = 'I received your command at '.$date->format('H:i:s').' my time.';
         $this->postMessage($message);
+    }
+
+    protected function command_fry(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $this->postMessage('I try not to be violent.. but you all just keep pushing me...');
+        $this->postMessage('zaps '.$sender->getName().' with an electric shock!');
     }
 }
