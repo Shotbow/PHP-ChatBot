@@ -206,7 +206,7 @@ class Shotbow_ChatBot_Bot
     protected function command_staff(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message
-            = 'Our Wiki Moderators maintain an unofficial [url=https://shotbow.net/forum/wiki/shotbow-staff]list of staff[/url]';
+            = 'Our wiki contains an [url=https://shotbow.net/forum/wiki/shotbow-staff]official list of staff[/url]';
         $this->postMessage($message);
     }
 
