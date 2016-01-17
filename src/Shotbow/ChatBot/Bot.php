@@ -326,8 +326,21 @@ class Shotbow_ChatBot_Bot
 
     protected function command_about(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message
-            = "I'm an Open-Sourced Bot here to help you!  You can view my code and contribute to me [url=https://github.com/shotbow/chatbot]on github[/url].";
+        $pwd = __DIR__;
+        $commands = [
+            "cd $pwd",
+            "git rev-parse --verify HEAD",
+        ];
+        $out = implode(";", $commands);
+
+        $version = @system($out);
+        $versionMsg = '';
+        if (!empty($version)) {
+            $version = substr($version, 0, 10);
+            $versionMsg = ' running on v.'.$version;
+        }
+
+        $message = "I'm an Open-Sourced Bot{$versionMsg} here to help you!  You can view my code and contribute to me [url=https://github.com/shotbow/chatbot]on github[/url].";
         $this->postMessage($message);
     }
 
