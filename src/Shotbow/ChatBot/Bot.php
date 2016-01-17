@@ -89,7 +89,6 @@ class Shotbow_ChatBot_Bot
                 'commands' => [$this, 'command_commands'],
                 'rules'    => [$this, 'command_rules'],
                 'banned'   => [$this, 'command_banned'],
-                'xp'       => [$this, 'command_xp'],
                 'report'   => [$this, 'command_report'],
                 'staff'    => [$this, 'command_staff'],
                 'social'   => [$this, 'command_social'],
