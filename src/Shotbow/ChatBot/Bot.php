@@ -93,6 +93,7 @@ class Shotbow_ChatBot_Bot
                 'staff'    => [$this, 'command_staff'],
                 'social'   => [$this, 'command_social'],
                 'about'    => [$this, 'command_about'],
+                'version'  => [$this, 'command_version'],
                 'bug'      => [$this, 'command_bug'],
                 'ts'       => [$this, 'command_teamspeak'],
                 'ip'       => [$this, 'command_ip'],
@@ -326,6 +327,12 @@ class Shotbow_ChatBot_Bot
 
     protected function command_about(Shotbow_ChatBot_User $sender, $arguments)
     {
+        $message = "I'm an Open-Sourced Bot here to help you!  You can view my code and contribute to me [url=https://github.com/shotbow/chatbot]on github[/url].";
+        $this->postMessage($message);
+    }
+
+    protected function command_version(Shotbow_ChatBot_User $sender, $arguments)
+    {
         $pwd = __DIR__;
         $commands = [
             "cd $pwd",
@@ -334,13 +341,13 @@ class Shotbow_ChatBot_Bot
         $out = implode(";", $commands);
 
         $version = @system($out);
-        $versionMsg = '';
         if (!empty($version)) {
-            $version = substr($version, 0, 10);
-            $versionMsg = ' running on v.'.$version;
+            $message
+                = "Hello, Inspector.  I am currently operating under commit [url=https://github.com/Shotbow/ChatBot/commit/{$version}]{$version}[/url].";
+        } else {
+            $message = "Sorry, Inspector.  I can't figure out what version I'm running.";
         }
 
-        $message = "I'm an Open-Sourced Bot{$versionMsg} here to help you!  You can view my code and contribute to me [url=https://github.com/shotbow/chatbot]on github[/url].";
         $this->postMessage($message);
     }
 
