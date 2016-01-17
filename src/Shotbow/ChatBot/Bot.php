@@ -100,6 +100,7 @@ class Shotbow_ChatBot_Bot
                 'vote'     => [$this, 'command_vote'],
                 'mcstatus' => [$this, 'command_mcstatus'],
                 'radio'    => [$this, 'command_radio'],
+                'arrow'    => [$this, 'command_arrow'],
             ];
         }
 
@@ -402,6 +403,11 @@ class Shotbow_ChatBot_Bot
     protected function command_radio(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = "Did you know we have our own Radio?  [url=http://minetheftauto.com/radio]Listen to Mine Theft Auto's Radio![/url]";
+        $this->postMessage($message);
+    }
+    protected function command_arrow(Shotbow_Chatbot_User $sender, $arguments)
+    {
+        $message = "Did you know Shotbow has it's own newsletter? Every Sunday a new weekly arrow is posted giving information about everything that has happened the week before, and possibly even a xp code! [url= https://shotbow.net/forum/threads/the-weekly-arrow-changes-from-the-week-of-january-9-2016.336970/] The Wekly Arrow! [/url] "
         $this->postMessage($message);
     }
 }
