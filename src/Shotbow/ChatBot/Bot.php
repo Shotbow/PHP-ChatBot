@@ -337,9 +337,9 @@ class Shotbow_ChatBot_Bot
         $pwd = __DIR__;
         $commands = [
             "cd $pwd",
-            "git rev-parse --verify HEAD",
+            'git rev-parse --verify HEAD',
         ];
-        $out = implode(";", $commands);
+        $out = implode(';', $commands);
 
         $version = @system($out);
         if (!empty($version)) {
