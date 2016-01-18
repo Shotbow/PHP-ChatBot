@@ -12,6 +12,14 @@ class ActiveUserStatement extends \Shotbow\ChatBot\Test\Helper\Statement
                 'user_id'  => 319,
                 'username' => 'Navarr',
             ],
+            [
+                'user_id'  => 1729,
+                'username' => 'SocomX1',
+            ],
+            [
+                'user_id'  => 134749,
+                'username' => 'lazertester',
+            ],
         ];
     }
 }
