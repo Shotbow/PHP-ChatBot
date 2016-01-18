@@ -1,4 +1,5 @@
 <?php
+
 namespace Shotbow\ChatBot\Test\Helper;
 
 class Bot extends \Shotbow_ChatBot_Bot
@@ -10,12 +11,13 @@ class Bot extends \Shotbow_ChatBot_Bot
         static::outputDebug($message, $sender->getName());
         $this->messages = [];
         parent::process($sender, $message);
+
         return $this->messages;
     }
 
     public static function outputDebug($message, $name)
     {
-        if (defined("DEBUG")) {
+        if (defined('DEBUG')) {
             echo "[MSG] <{$name}> {$message}".PHP_EOL;
         }
     }
