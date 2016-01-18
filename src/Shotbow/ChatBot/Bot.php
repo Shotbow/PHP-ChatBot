@@ -20,7 +20,7 @@ class Shotbow_ChatBot_Bot
     /** @var string */
     private $postUrl;
 
-    public function __construct(PDO $databaseHandle, $postUrl)
+    public function __construct(PDO $databaseHandle, $postUrl = null)
     {
         $this->dbh = $databaseHandle;
         $this->postUrl = $postUrl;
@@ -75,6 +75,10 @@ class Shotbow_ChatBot_Bot
 
     private function postToInternal($message, Shotbow_ChatBot_User $user, $channel = '#shoutbox')
     {
+        if (is_null($this->postUrl)) {
+            // No connection to internal system
+            return;
+        }
         $internalFormatted = $message;
         $internalFormatted = preg_replace('#\[url=([^\]]+)\]([^\[]+)\[/url\]#i', '<$1|$2>', $internalFormatted);
 
