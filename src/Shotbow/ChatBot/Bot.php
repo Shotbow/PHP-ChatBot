@@ -51,13 +51,26 @@ class Shotbow_ChatBot_Bot
         $name = is_null($name) ? static::INFO_NAME : $name;
         $user = Shotbow_ChatBot_User::create(static::INFO_ID, $name);
 
+        $this->postToDb($message, $name);
+        $this->postToInternal($message, $user);
+    }
+
+    protected function postAction($action, $name = null)
+    {
+        $name = is_null($name) ? static::INFO_NAME : $name;
+        $user = Shotbow_ChatBot_User::create(static::INFO_ID, $name);
+
+        $this->postToDb('/me '.$action, $name);
+        $this->postToInternal('_'.$action.'_', $user);
+    }
+
+    private function postToDb($message, $name)
+    {
         // Post to DB for website
         $stmt = $this->dbh->prepare(
             'INSERT INTO dark_taigachat (user_id,username,`date`,message,activity) VALUES (?,?,?,?,0)'
         );
-        $stmt->execute([static::INFO_ID, $user->getName(), time(), $message]);
-
-        $this->postToInternal($message, $user);
+        $stmt->execute([static::INFO_ID, $name, time(), $message]);
     }
 
     private function postToInternal($message, Shotbow_ChatBot_User $user, $channel = '#shoutbox')
@@ -397,7 +410,7 @@ class Shotbow_ChatBot_Bot
     protected function command_fry(Shotbow_ChatBot_User $sender, $arguments)
     {
         $this->postMessage('I try not to be violent.. but you all just keep pushing me...');
-        $this->postMessage('/me zaps '.$sender->getName().' with an electric shock!');
+        $this->postAction('zaps '.$sender->getName().' with an electric shock!');
     }
 
     protected function command_radio(Shotbow_ChatBot_User $sender, $arguments)
