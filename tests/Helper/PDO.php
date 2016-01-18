@@ -1,4 +1,5 @@
 <?php
+
 namespace Shotbow\ChatBot\Test\Helper;
 
 class PDO extends \PDO
@@ -8,15 +9,16 @@ class PDO extends \PDO
         // do nothing
     }
 
-    public function prepare($statement, $driver_options = array())
+    public function prepare($statement, $driver_options = [])
     {
         $stmt = new Statement($statement);
+
         return $stmt;
     }
 
-    public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null)
+    public function query($statement, $mode = self::ATTR_DEFAULT_FETCH_MODE, $arg3 = null)
     {
-        static::debugOutput(str_replace(["\r","\n"], ' ', $statement));
+        static::debugOutput(str_replace(["\r", "\n"], ' ', $statement));
         $activeUserQuery
             = <<<MySQL
 SELECT user.user_id, user.username
@@ -27,12 +29,13 @@ ORDER BY activity.date DESC
 MySQL;
         if ($statement == $activeUserQuery) {
             $stmt = new ActiveUserStatement($statement);
+
             return $stmt;
         }
     }
 
     public static function debugOutput($sql, $params = [])
     {
-        echo "[SQL] {$sql} (".implode(',', $params).")".PHP_EOL;
+        echo "[SQL] {$sql} (".implode(',', $params).')'.PHP_EOL;
     }
 }

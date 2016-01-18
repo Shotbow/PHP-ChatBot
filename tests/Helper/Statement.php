@@ -1,4 +1,5 @@
 <?php
+
 namespace Shotbow\ChatBot\Test\Helper;
 
 class Statement extends \PDOStatement
@@ -25,6 +26,7 @@ class Statement extends \PDOStatement
     {
         $first = $this->results[0];
         $vals = array_values($first);
+
         return $vals[0];
     }
 }
