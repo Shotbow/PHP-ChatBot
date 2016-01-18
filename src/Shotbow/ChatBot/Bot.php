@@ -143,6 +143,7 @@ MySQL;
                 'mcstatus' => [$this, 'command_mcstatus'],
                 'radio'    => [$this, 'command_radio'],
                 'arrow'    => [$this, 'command_arrow'],
+                'dj'       => [$this, 'command_dj'],
             ];
         }
 
@@ -472,6 +473,12 @@ MySQL;
         }
         $message .= implode(', ', $usernames);
 
+        $this->postMessage($message);
+    }
+
+    protected function command_dj(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = "Dubtrack allows you to queue up music and listen to it with friends.  [url=https://www.dubtrack.fm/join/shotbow-dj]Come and join Shotbow's Party![/url]";
         $this->postMessage($message);
     }
 }
