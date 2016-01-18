@@ -8,4 +8,4 @@ $pdo = new \Shotbow\ChatBot\Test\Helper\PDO();
 
 $bot = new Shotbow_ChatBot_Bot($pdo);
 
-$bot->process($user, '!ip');
+$bot->process($user, '!activeusers');
