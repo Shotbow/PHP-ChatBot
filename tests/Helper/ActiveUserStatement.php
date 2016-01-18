@@ -1,4 +1,5 @@
 <?php
+
 namespace Shotbow\ChatBot\Test\Helper;
 
 class ActiveUserStatement extends \Shotbow\ChatBot\Test\Helper\Statement

@@ -466,7 +466,7 @@ MySQL;
 
         $users = $this->getUsersInChat();
         $usernames = [];
-        $message = "Players in chat: ";
+        $message = 'Players in chat: ';
         foreach ($users as $user) {
             $usernames[] = $user->getName();
         }
