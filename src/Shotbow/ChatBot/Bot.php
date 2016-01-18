@@ -94,6 +94,31 @@ class Shotbow_ChatBot_Bot
         curl_exec($ch);
     }
 
+    /**
+     * @return Shotbow_ChatBot_User[]
+     */
+    protected function getUsersInChat()
+    {
+        $sql
+            = <<<MySQL
+SELECT xf_user.user_id, xf_user.username
+FROM dark_taigachat_activity AS activity
+LEFT JOIN xf_user AS user ON (user.user_id = activity.user_id)
+WHERE activity.date > UNIX_TIMESTAMP()-150 AND xf_user.visible=1
+ORDER BY activity.date DESC
+MySQL;
+
+        $stmt = $this->dbh->query($sql);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $users = [];
+        foreach ($results as $result) {
+            $users[] = Shotbow_ChatBot_User::create($result['user_id'], $result['username']);
+        }
+
+        return $users;
+    }
+
     protected function getCommandList()
     {
         if (!isset($this->commands)) {
@@ -127,6 +152,7 @@ class Shotbow_ChatBot_Bot
                 'createminezevent' => [$this, 'command_createMineZEvent'],
                 'ping'             => [$this, 'command_ping'],
                 'fry'              => [$this, 'command_fry'],
+                'activeusers'      => [$this, 'command_activeusers'],
             ];
         }
 
@@ -425,6 +451,23 @@ class Shotbow_ChatBot_Bot
         $url = $statement->fetchColumn();
 
         $message = "Did you know Shotbow has it's own newsletter? Every Sunday a new weekly arrow is posted giving information about everything that has happened the week before, and possibly even xp codes! [url={$url}]Read the latest Weekly Arrow![/url]";
+        $this->postMessage($message);
+    }
+
+    protected function command_activeusers(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        if ($sender->getName() != 'Navarr') {
+            return;
+        }
+
+        $users = $this->getUsersInChat();
+        $usernames = [];
+        $message = "Players in chat: ";
+        foreach ($users as $user) {
+            $usernames[] = $user->getName();
+        }
+        $message .= implode(', ', $usernames);
+
         $this->postMessage($message);
     }
 }
