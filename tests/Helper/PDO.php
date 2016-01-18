@@ -36,6 +36,8 @@ MySQL;
 
     public static function debugOutput($sql, $params = [])
     {
-        echo "[SQL] {$sql} (".implode(',', $params).')'.PHP_EOL;
+        if (defined("DEBUG")) {
+            echo "[SQL] {$sql} (".implode(',', $params).')'.PHP_EOL;
+        }
     }
 }
