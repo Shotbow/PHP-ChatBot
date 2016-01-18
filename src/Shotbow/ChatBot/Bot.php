@@ -101,10 +101,10 @@ class Shotbow_ChatBot_Bot
     {
         $sql
             = <<<MySQL
-SELECT xf_user.user_id, xf_user.username
+SELECT user.user_id, user.username
 FROM dark_taigachat_activity AS activity
 LEFT JOIN xf_user AS user ON (user.user_id = activity.user_id)
-WHERE activity.date > UNIX_TIMESTAMP()-150 AND xf_user.visible=1
+WHERE activity.date > UNIX_TIMESTAMP()-150 AND user.visible=1
 ORDER BY activity.date DESC
 MySQL;
 
