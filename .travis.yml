@@ -8,9 +8,8 @@ php:
 matrix:
   fast_finish: true
   allow_failures:
-    php:
-      - '5.5'
-      - nightly
+    - php: nightly
+    - php: '5.5'
 install:
 - composer self-update
 - composer install
