@@ -397,7 +397,7 @@ class Shotbow_ChatBot_Bot
     protected function command_fry(Shotbow_ChatBot_User $sender, $arguments)
     {
         $this->postMessage('I try not to be violent.. but you all just keep pushing me...');
-        $this->postMessage('zaps '.$sender->getName().' with an electric shock!');
+        $this->postMessage('/me zaps '.$sender->getName().' with an electric shock!');
     }
 
     protected function command_radio(Shotbow_ChatBot_User $sender, $arguments)
