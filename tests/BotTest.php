@@ -45,7 +45,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $bot = new Bot($dbh);
 
         $navarr = \Shotbow_ChatBot_User::create(1, 'Navarr');
-        $thomas = \Shotbow_ChatBot_User::create(1587103, 'Thomas_Dorland');
+        $thomas = \Shotbow_ChatBot_User::create(1669321, 'Thomas_Dorland');
 
         $messages = $bot->process($navarr, '!startminez');
 

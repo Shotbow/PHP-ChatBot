@@ -93,7 +93,7 @@ class Shotbow_ChatBot_Bot
             return false;
         }
 
-        if ($sender->getId() == 1587103) {
+        if ($sender->getId() == 1669321) {
             $this->postMessage('Seriously Thomas?  Stop already.');
         } else {
             $this->postMessage('Did Thomas put you up to this?  Just stop already.');
