@@ -28,6 +28,8 @@ class Shotbow_ChatBot_Bot
 
     public function process(Shotbow_ChatBot_User $sender, $message)
     {
+        $processed = false;
+
         if (substr($message, 0, 1) == '!') {
             // This might be a command.
             $separate = explode(' ', $message, 2);
@@ -37,8 +39,65 @@ class Shotbow_ChatBot_Bot
                 // do rate limiting
                 $callable = $this->getCommandCallable($command);
                 $callable($sender, $arguments);
+                $processed = true;
             }
         }
+
+        if (!$processed) {
+            $this->processSpecial($sender, $message);
+        }
+    }
+
+    /**
+     * @param Shotbow_ChatBot_User $sender
+     * @param string $message
+     * @return bool Whether or not the message was acted upon.
+     */
+    private function processSpecial(Shotbow_ChatBot_User $sender, $message)
+    {
+        $try = [
+            [$this, 'startOrCreateThing'],
+        ];
+
+        $processed = false;
+
+        foreach ($try as $callable) {
+            $processed = $callable($sender, $message);
+
+            if ($processed) {
+                break;
+            }
+        }
+
+        return $processed;
+    }
+
+    /**
+     * In honor of Thomas_Dorland.  May he please stop terrorizing chat.
+     *
+     * @param Shotbow_ChatBot_User $sender
+     * @param string $message
+     * @return bool Whether or not the message was acted upon.
+     */
+    private function startOrCreateThing(Shotbow_ChatBot_User $sender, $message)
+    {
+        $create = '!create';
+        $start = '!start';
+        $lMessage = strtolower($message);
+
+        $isOne = substr($lMessage, 0, strlen($create)) == $create || substr($lMessage, 0, strlen($start)) == $start;
+
+        if (!$isOne) {
+            return false;
+        }
+
+        if ($sender->getId() == 1587103) {
+            $this->postMessage('Seriously Thomas?  Stop already.');
+        } else {
+            $this->postMessage('Did Thomas put you up to this?  Just stop already.');
+        }
+
+        return true;
     }
 
     protected function commandNameExists($command)
@@ -187,10 +246,6 @@ MySQL;
                 'mumble'    => 'ts',
 
                 'test' => 'ping',
-
-                'createminezeventplease'  => 'createminezevent',
-                'createannihilationevent' => 'createminezevent',
-                'createannievent'         => 'createminezevent',
             ];
         }
 
