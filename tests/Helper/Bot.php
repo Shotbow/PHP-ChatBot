@@ -22,7 +22,7 @@ class Bot extends \Shotbow_ChatBot_Bot
         }
     }
 
-    protected function postMessage($message, $name = null)
+    public function postMessage($message, $name = null)
     {
         parent::postMessage($message, $name);
         $name = is_null($name) ? static::INFO_NAME : $name;
@@ -30,7 +30,7 @@ class Bot extends \Shotbow_ChatBot_Bot
         static::outputDebug($message, $name);
     }
 
-    protected function postAction($action, $name = null)
+    public function postAction($action, $name = null)
     {
         parent::postAction($action, $name);
         $name = is_null($name) ? static::INFO_NAME : $name;
