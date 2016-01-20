@@ -46,7 +46,7 @@ class Shotbow_ChatBot_Bot
         return $this->commandExists($command) || $this->hiddenCommandExists($command) || $this->aliasExists($command);
     }
 
-    protected function postMessage($message, $name = null)
+    public function postMessage($message, $name = null)
     {
         $name = is_null($name) ? static::INFO_NAME : $name;
         $user = Shotbow_ChatBot_User::create(static::INFO_ID, $name);
@@ -55,7 +55,7 @@ class Shotbow_ChatBot_Bot
         $this->postToInternal($message, $user);
     }
 
-    protected function postAction($action, $name = null)
+    public function postAction($action, $name = null)
     {
         $name = is_null($name) ? static::INFO_NAME : $name;
         $user = Shotbow_ChatBot_User::create(static::INFO_ID, $name);
