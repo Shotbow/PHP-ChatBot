@@ -50,7 +50,7 @@ class Shotbow_ChatBot_Bot
 
     /**
      * @param Shotbow_ChatBot_User $sender
-     * @param string               $message
+     * @param string $message
      *
      * @return bool Whether or not the message was acted upon.
      */
@@ -77,7 +77,7 @@ class Shotbow_ChatBot_Bot
      * In honor of Thomas_Dorland.  May he please stop terrorizing chat.
      *
      * @param Shotbow_ChatBot_User $sender
-     * @param string               $message
+     * @param string $message
      *
      * @return bool Whether or not the message was acted upon.
      */
@@ -205,6 +205,7 @@ MySQL;
                 'radio'    => [$this, 'command_radio'],
                 'arrow'    => [$this, 'command_arrow'],
                 'dj'       => [$this, 'command_dj'],
+                'contact'  => [$this, 'command_contact'],
             ];
         }
 
@@ -239,6 +240,7 @@ MySQL;
                 'playerme'   => 'social',
                 'instagram'  => 'social',
                 'tumblr'     => 'social',
+                'contactus'  => 'contact',
 
                 'source'    => 'about',
                 'bugs'      => 'bug',
@@ -536,6 +538,12 @@ MySQL;
     protected function command_dj(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = "Dubtrack allows you to queue up music and listen to it with friends.  [url=https://www.dubtrack.fm/join/shotbow-dj]Come and join Shotbow's Party![/url]";
+        $this->postMessage($message);
+    }
+
+    protected function command_contact(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = 'Some issues, like rank or payment issues, can only be fixed by [url=https://shotbow.net/forum/contact]contacting support through the "Contact Us" link[/url].  Please allow two business days for a response.';
         $this->postMessage($message);
     }
 }
