@@ -50,7 +50,7 @@ class Shotbow_ChatBot_Bot
 
     /**
      * @param Shotbow_ChatBot_User $sender
-     * @param string $message
+     * @param string               $message
      *
      * @return bool Whether or not the message was acted upon.
      */
@@ -77,7 +77,7 @@ class Shotbow_ChatBot_Bot
      * In honor of Thomas_Dorland.  May he please stop terrorizing chat.
      *
      * @param Shotbow_ChatBot_User $sender
-     * @param string $message
+     * @param string               $message
      *
      * @return bool Whether or not the message was acted upon.
      */
