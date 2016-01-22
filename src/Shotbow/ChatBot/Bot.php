@@ -5,6 +5,8 @@ class Shotbow_ChatBot_Bot
     const INFO_ID = '1587103';
     const INFO_NAME = 'Chat Bot';
 
+    const TIMEZONE = 'America/Chicago';
+
     /** @var array */
     private $commands;
 
@@ -45,6 +47,28 @@ class Shotbow_ChatBot_Bot
 
         if (!$processed) {
             $this->processSpecial($sender, $message);
+        }
+    }
+
+    public function processCron()
+    {
+        // TODO Stub: Process a bot Cron-Job.  Expects to be run every minute.
+        /** @var Shotbow_ChatBot_CronTask[] $jobs */
+        $jobs = [
+            Shotbow_ChatBot_CronTask::create('0','*','*','*','*',function() use($this) {
+                $this->postMessage('Ping-Pong.  The hour is now '.date('H:i A'));
+            }),
+        ];
+
+        $tz = new DateTimeZone(static::TIMEZONE);
+        $now = new DateTime('now', $tz);
+
+        foreach($jobs as $job)
+        {
+            if ($job->shouldRunOnDateTime($now)) {
+                $callable = $job->getCallable();
+                $callable();
+            }
         }
     }
 
@@ -510,7 +534,7 @@ MySQL;
 
     protected function command_ping(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $tz = new DateTimeZone('America/Chicago');
+        $tz = new DateTimeZone(static::TIMEZONE);
         $date = new DateTimeImmutable('now', $tz);
 
         $message = 'I received your command at '.$date->format('H:i:s').' my time.';
