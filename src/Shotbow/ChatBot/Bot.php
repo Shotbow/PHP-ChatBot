@@ -57,7 +57,8 @@ class Shotbow_ChatBot_Bot
     private function processSpecial(Shotbow_ChatBot_User $sender, $message)
     {
         $try = [
-            [$this, 'startOrCreateThing'],
+            [$this, 'special_startOrCreateThing'],
+            [$this, 'special_mew'],
         ];
 
         $processed = false;
@@ -81,7 +82,7 @@ class Shotbow_ChatBot_Bot
      *
      * @return bool Whether or not the message was acted upon.
      */
-    private function startOrCreateThing(Shotbow_ChatBot_User $sender, $message)
+    private function special_startOrCreateThing(Shotbow_ChatBot_User $sender, $message)
     {
         $create = '!create';
         $start = '!start';
@@ -100,6 +101,23 @@ class Shotbow_ChatBot_Bot
         }
 
         return true;
+    }
+
+    /**
+     * May the Nyans forever rain down upon Shotbow
+     *
+     * @param Shotbow_ChatBot_User $sender
+     * @param                      $message
+     * @return bool
+     */
+    private function special_mew(Shotbow_ChatBot_User $sender, $message)
+    {
+        if (in_array($sender->getId(), [319, 268, 358])) {
+            $this->postMessage('Meow desu!');
+            return true;
+        }
+
+        return false;
     }
 
     protected function commandNameExists($command)
@@ -219,7 +237,6 @@ MySQL;
                 'createminezevent' => [$this, 'command_createMineZEvent'],
                 'ping'             => [$this, 'command_ping'],
                 'fry'              => [$this, 'command_fry'],
-                'activeusers'      => [$this, 'command_activeusers'],
             ];
         }
 
@@ -515,23 +532,6 @@ MySQL;
         $url = $statement->fetchColumn();
 
         $message = "Did you know Shotbow has it's own newsletter? Every Sunday a new weekly arrow is posted giving information about everything that has happened the week before, and possibly even xp codes! [url={$url}]Read the latest Weekly Arrow![/url]";
-        $this->postMessage($message);
-    }
-
-    protected function command_activeusers(Shotbow_ChatBot_User $sender, $arguments)
-    {
-        if ($sender->getName() != 'Navarr') {
-            return;
-        }
-
-        $users = $this->getUsersInChat();
-        $usernames = [];
-        $message = 'Players in chat: ';
-        foreach ($users as $user) {
-            $usernames[] = $user->getName();
-        }
-        $message .= implode(', ', $usernames);
-
         $this->postMessage($message);
     }
 
