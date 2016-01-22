@@ -104,17 +104,19 @@ class Shotbow_ChatBot_Bot
     }
 
     /**
-     * May the Nyans forever rain down upon Shotbow
+     * May the Nyans forever rain down upon Shotbow.
      *
      * @param Shotbow_ChatBot_User $sender
      * @param                      $message
+     *
      * @return bool
      */
     private function special_mew(Shotbow_ChatBot_User $sender, $message)
     {
-        $searchString = "mew";
+        $searchString = 'mew';
         if (in_array($sender->getId(), [319, 268, 358]) && strtolower(substr($message, 0, strlen($searchString))) == $searchString) {
             $this->postMessage('Meow desu!');
+
             return true;
         }
 
