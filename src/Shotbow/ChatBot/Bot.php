@@ -444,7 +444,7 @@ MySQL;
         $profileString = implode(', ', $urlVotes);
         $profileString .= ', and '.$lastProfile[0];
 
-        $message = "Vote for our network on {$profileString}.";
+        $message = "Vote for our network on {$profileString}.  You'll even earn some XP!";
 
         $this->postMessage($message);
     }
