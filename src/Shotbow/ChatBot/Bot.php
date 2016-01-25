@@ -140,7 +140,14 @@ class Shotbow_ChatBot_Bot
     {
         $searchString = 'mew';
         if (in_array($sender->getId(), [319, 268, 358]) && strtolower(substr($message, 0, strlen($searchString))) == $searchString) {
-            $this->postMessage('Meow desu!');
+            $possibleResults = [
+                'Meow desu!',
+                'Nyan desu!',
+                'にゃん～',
+                'あなた、猫ですか?!',
+            ];
+            $message = $possibleResults[rand(0, count($possibleResults-1))];
+            $this->postMessage($message);
 
             return true;
         }
