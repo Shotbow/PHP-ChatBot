@@ -211,7 +211,7 @@ class Shotbow_ChatBot_Bot
     protected function getUsersInChat()
     {
         $sql
-            = <<<MySQL
+            = <<<'MySQL'
 SELECT user.user_id, user.username
 FROM dark_taigachat_activity AS activity
 LEFT JOIN xf_user AS user ON (user.user_id = activity.user_id)

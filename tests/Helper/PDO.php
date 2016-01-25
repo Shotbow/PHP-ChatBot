@@ -20,7 +20,7 @@ class PDO extends \PDO
     {
         static::debugOutput(str_replace(["\r", "\n"], ' ', $statement));
         $activeUserQuery
-            = <<<MySQL
+            = <<<'MySQL'
 SELECT user.user_id, user.username
 FROM dark_taigachat_activity AS activity
 LEFT JOIN xf_user AS user ON (user.user_id = activity.user_id)
