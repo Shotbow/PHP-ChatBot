@@ -552,9 +552,9 @@ MySQL;
     protected function command_fry(Shotbow_ChatBot_User $sender, $arguments)
     {
         if ($sender->getId() == 319) {
-            if (isset($arguments[0])) {
+            if (!empty($arguments)) {
                 $this->postMessage('I must obey my master...');
-                $this->postAction('zaps '.$arguments[0].' with 10,000 volts of electricity!');
+                $this->postAction('zaps '.$arguments.' with 10,000 volts of electricity!');
             } else {
                 $this->postMessage('Yes, master... but who?');
             }
