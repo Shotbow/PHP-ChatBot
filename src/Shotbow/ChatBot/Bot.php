@@ -473,7 +473,7 @@ MySQL;
     {
         $profileString = $this->getVoteProfileString();
 
-        $message = "Vote for our network on {$profileString}.";
+        $message = "Vote for our network on {$profileString}.  You'll even earn some XP!";
 
         $this->postMessage($message);
     }
@@ -482,7 +482,7 @@ MySQL;
     {
         $profileString = $this->getVoteProfileString();
 
-        $message = "[TIP] We need *YOU* to increase network visibility by voting on {$profileString}!";
+        $message = "[TIP] We need *YOU* to increase network visibility by voting on {$profileString}!  You'll even earn some XP!";
     }
 
     protected function command_about(Shotbow_ChatBot_User $sender, $arguments)
