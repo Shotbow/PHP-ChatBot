@@ -59,7 +59,7 @@ class Shotbow_ChatBot_Bot
     {
         /** @var Shotbow_ChatBot_CronTask[] $jobs */
         $jobs = [
-            Shotbow_ChatBot_CronTask::create(CronExpression::factory('* */2 * * *'), [$this, 'cron_vote']),
+            Shotbow_ChatBot_CronTask::create(CronExpression::factory('0 */2 * * *'), [$this, 'cron_vote']),
         ];
 
         $tz = new DateTimeZone(static::TIMEZONE);
