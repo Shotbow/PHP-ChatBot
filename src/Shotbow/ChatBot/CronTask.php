@@ -1,36 +1,27 @@
 <?php
 
+use Cron\CronExpression;
+
 class Shotbow_ChatBot_CronTask
 {
-    private $minute;
-    private $hour;
-    private $dayOfMonth;
-    private $month;
-    private $dayOfWeek;
+    private $expr;
     private $callable;
 
-    private function __construct($minute, $hour, $dayOfMonth, $month, $dayOfWeek, $callable)
+    private function __construct(CronExpression $expression, $callable)
     {
-        $this->minute = $minute;
-        $this->hour = $hour;
-        $this->dayOfMonth = $dayOfMonth;
-        $this->month = $month;
-        $this->dayOfWeek = $dayOfWeek;
+        $this->expr = $expression;
         $this->callable = $callable;
     }
 
     /**
-     * @param int|string $minute
-     * @param int|string $hour
-     * @param int|string $dayOfMonth
-     * @param int|string $month
-     * @param int|string $dayOfWeek
-     * @param callable $callable
+     * @param CronExpression $expression
+     * @param callable       $callable
+     *
      * @return Shotbow_ChatBot_CronTask
      */
-    public static function create($minute, $hour, $dayOfMonth, $month, $dayOfWeek, $callable)
+    public static function create(CronExpression $expression, $callable)
     {
-        return new self($minute, $hour, $dayOfMonth, $month, $dayOfWeek, $callable);
+        return new self($expression, $callable);
     }
 
     /**
@@ -42,26 +33,16 @@ class Shotbow_ChatBot_CronTask
     }
 
     /**
-     * @param int $minute
-     * @param int $hour
-     * @param int $dayOfMonth
-     * @param int $month
-     * @param int $dayOfWeek
+     * Determine if the cron is due to run based on the current date or a
+     * specific date.  This method assumes that the current number of
+     * seconds are irrelevant, and should be called once per minute.
      *
-     * @return boolean
-     */
-    public function shouldRunOn($minute, $hour, $dayOfMonth, $month, $dayOfWeek)
-    {
-        // TODO
-    }
-
-    /**
-     * @param DateTime $time
+     * @param string|\DateTime $currentTime Relative calculation date
      *
-     * @return boolean
+     * @return bool Returns TRUE if the cron is due to run or FALSE if not
      */
-    public function shouldRunOnDateTime(DateTime $time)
+    public function isDue($currentTime = 'now')
     {
-        // TODO
+        return $this->expr->isDue($currentTime);
     }
 }

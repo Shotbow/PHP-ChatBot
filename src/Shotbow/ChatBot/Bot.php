@@ -1,5 +1,7 @@
 <?php
 
+use Cron\CronExpression;
+
 class Shotbow_ChatBot_Bot
 {
     const INFO_ID = '1587103';
@@ -50,22 +52,21 @@ class Shotbow_ChatBot_Bot
         }
     }
 
+    /**
+     * Process a bot Cron-Job.  Expects to be run every minute.
+     */
     public function processCron()
     {
-        // TODO Stub: Process a bot Cron-Job.  Expects to be run every minute.
         /** @var Shotbow_ChatBot_CronTask[] $jobs */
         $jobs = [
-            Shotbow_ChatBot_CronTask::create('0','*','*','*','*',function() use($this) {
-                $this->postMessage('Ping-Pong.  The hour is now '.date('H:i A'));
-            }),
+            Shotbow_ChatBot_CronTask::create(CronExpression::factory('* */2 * * *'), [$this, 'cron_vote']),
         ];
 
         $tz = new DateTimeZone(static::TIMEZONE);
         $now = new DateTime('now', $tz);
 
-        foreach($jobs as $job)
-        {
-            if ($job->shouldRunOnDateTime($now)) {
+        foreach ($jobs as $job) {
+            if ($job->isDue($now)) {
                 $callable = $job->getCallable();
                 $callable();
             }
@@ -396,8 +397,7 @@ MySQL;
 
     protected function command_banned(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message
-            = 'We do not discuss bans in the chatroom.  Please [url=https://shotbow.net/forum/threads/23560/]Post an Appeal[/url].  It is the fastest way to get your ban handled.';
+        $message = 'We do not discuss bans in the chatroom.  Please [url=https://shotbow.net/forum/threads/23560/]Post an Appeal[/url].  It is the fastest way to get your ban handled.';
         $this->postMessage($message);
     }
 
@@ -415,15 +415,13 @@ MySQL;
 
     protected function command_report(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message
-            = 'To report a malicious player, follow [url=https://shotbow.net/forum/threads/167314/]our Report a Player instructions[/url].  Are they in game right now?  Type /report <name> to report them to our currently active staff!';
+        $message = 'To report a malicious player, follow [url=https://shotbow.net/forum/threads/167314/]our Report a Player instructions[/url].  Are they in game right now?  Type /report <name> to report them to our currently active staff!';
         $this->postMessage($message);
     }
 
     protected function command_staff(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message
-            = 'Our wiki contains an [url=https://shotbow.net/forum/wiki/shotbow-staff]official list of staff[/url]';
+        $message = 'Our wiki contains an [url=https://shotbow.net/forum/wiki/shotbow-staff]official list of staff[/url]';
         $this->postMessage($message);
     }
 
@@ -452,7 +450,7 @@ MySQL;
         $this->postMessage($message);
     }
 
-    protected function command_vote(Shotbow_ChatBot_User $sender, $arguments)
+    private function getVoteProfileString()
     {
         $votes = [
             'Planet Minecraft'     => 'http://www.planetminecraft.com/server/minez-1398788/',
@@ -468,9 +466,23 @@ MySQL;
         $profileString = implode(', ', $urlVotes);
         $profileString .= ', and '.$lastProfile[0];
 
-        $message = "Vote for our network on {$profileString}.  You'll even earn some XP!";
+        return $profileString;
+    }
+
+    protected function command_vote(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $profileString = $this->getVoteProfileString();
+
+        $message = "Vote for our network on {$profileString}.";
 
         $this->postMessage($message);
+    }
+
+    protected function cron_vote()
+    {
+        $profileString = $this->getVoteProfileString();
+
+        $message = "[TIP] We need *YOU* to increase network visibility by voting on {$profileString}!";
     }
 
     protected function command_about(Shotbow_ChatBot_User $sender, $arguments)
@@ -490,8 +502,7 @@ MySQL;
 
         $version = @system($out);
         if (!empty($version)) {
-            $message
-                = "Hello, Inspector.  I am currently operating under commit [url=https://github.com/Shotbow/ChatBot/commit/{$version}]{$version}[/url].";
+            $message = "Hello, Inspector.  I am currently operating under commit [url=https://github.com/Shotbow/ChatBot/commit/{$version}]{$version}[/url].";
         } else {
             $message = "Sorry, Inspector.  I can't figure out what version I'm running.";
         }
@@ -501,22 +512,19 @@ MySQL;
 
     protected function command_bug(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message
-            = 'Help keep our games stable by [url=https://shotbow.net/forum/link-forums/report-a-bug.670/]Reporting Bugs[/url].';
+        $message = 'Help keep our games stable by [url=https://shotbow.net/forum/link-forums/report-a-bug.670/]Reporting Bugs[/url].';
         $this->postMessage($message);
     }
 
     protected function command_teamspeak(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message
-            = 'You can [url=https://shotbow.net/forum/wiki/shotbow-teamspeak/]Connect to our Teamspeak Server[/url] at ts.shotbow.net';
+        $message = 'You can [url=https://shotbow.net/forum/wiki/shotbow-teamspeak/]Connect to our Teamspeak Server[/url] at ts.shotbow.net';
         $this->postMessage($message);
     }
 
     protected function command_ip(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message
-            = 'Connect to us on US.SHOTBOW.NET or EU.SHOTBOW.NET.  Having Trouble?  [url=https://shotbow.net/forum/threads/having-trouble-connecting-to-us-or-eu-read-this.229762/]Try these steps[/url].';
+        $message = 'Connect to us on US.SHOTBOW.NET or EU.SHOTBOW.NET.  Having Trouble?  [url=https://shotbow.net/forum/threads/having-trouble-connecting-to-us-or-eu-read-this.229762/]Try these steps[/url].';
         $this->postMessage($message);
     }
 
