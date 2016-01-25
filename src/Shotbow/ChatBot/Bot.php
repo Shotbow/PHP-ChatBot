@@ -551,8 +551,17 @@ MySQL;
 
     protected function command_fry(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $this->postMessage('I try not to be violent.. but you all just keep pushing me...');
-        $this->postAction('zaps '.$sender->getName().' with an electric shock!');
+        if ($sender->getId() == 319) {
+            if (isset($arguments[0])) {
+                $this->postMessage('I must obey my master...');
+                $this->postAction('zaps '.$arguments[0].' with 10,000 volts of electricity!');
+            } else {
+                $this->postMessage('Yes, master... but who?');
+            }
+        } else {
+            $this->postMessage('I try not to be violent.. but you all just keep pushing me...');
+            $this->postAction('zaps '.$sender->getName().' with an electric shock!');
+        }
     }
 
     protected function command_radio(Shotbow_ChatBot_User $sender, $arguments)
