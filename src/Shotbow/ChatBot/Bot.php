@@ -146,7 +146,7 @@ class Shotbow_ChatBot_Bot
                 'にゃん～',
                 'あなた、猫ですか?!',
             ];
-            $message = $possibleResults[rand(0, count($possibleResults)-1)];
+            $message = $possibleResults[rand(0, count($possibleResults) - 1)];
             $this->postMessage($message);
 
             return true;
