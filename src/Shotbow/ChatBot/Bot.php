@@ -139,7 +139,9 @@ class Shotbow_ChatBot_Bot
     private function special_mew(Shotbow_ChatBot_User $sender, $message)
     {
         $searchString = 'mew';
-        if (in_array($sender->getId(), [319, 268, 358]) && strtolower(substr($message, 0, strlen($searchString))) == $searchString) {
+        if (in_array($sender->getId(), [319, 268, 358])
+            && strtolower(substr($message, 0, strlen($searchString))) == $searchString
+        ) {
             $possibleResults = [
                 'Meow desu!',
                 'Nyan desu!',
@@ -294,6 +296,7 @@ MySQL;
                 'instagram'  => 'social',
                 'tumblr'     => 'social',
                 'contactus'  => 'contact',
+                'command'    => 'commands',
 
                 'source'    => 'about',
                 'bugs'      => 'bug',
@@ -603,7 +606,7 @@ MySQL;
 
     protected function command_why(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = 'That\'s a good question.  Why *does* Shotbow have chat?  Chat is not for live admin assistance, it\'s to help foster the wonderful Shotbow community.  Ask questions, if staff is around they\'ll answer.  You can also type !command to see what other tricks I have and the information I can give you.';
+        $message = 'That\'s a good question.  Why *does* Shotbow have chat?  Chat is not for live admin assistance, it\'s to help foster the wonderful Shotbow community.  Ask questions, if staff is around they\'ll answer.  You can also type !commands to see what other tricks I have and the information I can give you.';
         $this->postMessage($message);
     }
 }
