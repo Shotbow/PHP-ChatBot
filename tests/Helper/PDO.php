@@ -27,10 +27,13 @@ LEFT JOIN xf_user AS user ON (user.user_id = activity.user_id)
 WHERE activity.date > UNIX_TIMESTAMP()-150 AND user.visible=1
 ORDER BY activity.date DESC
 MySQL;
-        if ($statement == $activeUserQuery) {
-            $stmt = new ActiveUserStatement($statement);
-
-            return $stmt;
+        $weeklyArrowQuery = "SELECT url FROM weeklyarrow_published ORDER BY id DESC LIMIT 1";
+        switch($statement) {
+            case $activeUserQuery:
+            default:
+                return new ActiveUserStatement($statement);
+            case $weeklyArrowQuery:
+                return new WeeklyArrowStatement($statement);
         }
     }
 

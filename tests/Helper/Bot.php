@@ -38,4 +38,9 @@ class Bot extends \Shotbow_ChatBot_Bot
         $this->messages[] = [$action, $name];
         static::outputDebug($action, $name);
     }
+
+    public function getCommandList()
+    {
+        return parent::getCommandList();
+    }
 }
