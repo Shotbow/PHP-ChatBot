@@ -262,6 +262,7 @@ MySQL;
                 'dj'       => [$this, 'command_dj'],
                 'contact'  => [$this, 'command_contact'],
                 'why'      => [$this, 'command_why'],
+                'math'     => [$this, 'command_math'],
             ];
         }
 
@@ -608,5 +609,26 @@ MySQL;
     {
         $message = 'That\'s a good question.  Why *does* Shotbow have chat?  Chat is not for live admin assistance, it\'s to help foster the wonderful Shotbow community.  Ask questions, if staff is around they\'ll answer.  You can also type !commands to see what other tricks I have and the information I can give you.';
         $this->postMessage($message);
+    }
+
+    protected function command_math(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        if (empty($arguments)) {
+            $this->postMessage('You need to provide a mathematical expression for me to solve if you\'re going to use this command.');
+        } else {
+            try {
+                $compiler = Hoa\Compiler\Llk\Llk::load(
+                    new Hoa\File\Read('hoa://Library/Math/Arithmetic.pp')
+                );
+
+                $visitor = new Hoa\Math\Visitor\Arithmetic();
+                $ast = $compiler->parse($arguments);
+                $result = $visitor->visit($ast);
+
+                $this->postMessage($arguments.' = '.$result);
+            } catch (Exception $e) {
+                $this->postMessage('I\'m sorry, but I don\'t recognize that as a mathematical expression.  Feel free to try another.');
+            }
+        }
     }
 }
