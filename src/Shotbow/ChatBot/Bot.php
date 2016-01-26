@@ -1,5 +1,7 @@
 <?php
 
+require_once(realpath(__DIR__.'/../../../vendor/autoload.php'));
+
 use Cron\CronExpression;
 
 class Shotbow_ChatBot_Bot
