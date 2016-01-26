@@ -69,7 +69,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $navarr = \Shotbow_ChatBot_User::create(1, 'Navarr');
 
         $commands = $bot->getCommandList();
-        foreach($commands as $command => $callable) {
+        foreach ($commands as $command => $callable) {
             $bot->process($navarr, "!{$command}");
         }
     }
