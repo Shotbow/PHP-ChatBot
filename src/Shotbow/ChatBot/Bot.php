@@ -84,7 +84,6 @@ class Shotbow_ChatBot_Bot
     private function processSpecial(Shotbow_ChatBot_User $sender, $message)
     {
         $try = [
-            [$this, 'special_startOrCreateThing'],
             [$this, 'special_mew'],
         ];
 
@@ -99,35 +98,6 @@ class Shotbow_ChatBot_Bot
         }
 
         return $processed;
-    }
-
-    /**
-     * In honor of Thomas_Dorland.  May he please stop terrorizing chat.
-     *
-     * @param Shotbow_ChatBot_User $sender
-     * @param string               $message
-     *
-     * @return bool Whether or not the message was acted upon.
-     */
-    private function special_startOrCreateThing(Shotbow_ChatBot_User $sender, $message)
-    {
-        $create = '!create';
-        $start = '!start';
-        $lMessage = strtolower($message);
-
-        $isOne = substr($lMessage, 0, strlen($create)) == $create || substr($lMessage, 0, strlen($start)) == $start;
-
-        if (!$isOne) {
-            return false;
-        }
-
-        if ($sender->getId() == 1669321) {
-            $this->postMessage('Seriously Thomas?  Stop already.');
-        } else {
-            $this->postMessage('Did Thomas put you up to this?  Just stop already.');
-        }
-
-        return true;
     }
 
     /**
@@ -275,7 +245,6 @@ MySQL;
     {
         if (!isset($this->hiddenCommands)) {
             $this->hiddenCommands = [
-                'createminezevent' => [$this, 'command_createMineZEvent'],
                 'ping'             => [$this, 'command_ping'],
                 'fry'              => [$this, 'command_fry'],
             ];
@@ -547,12 +516,6 @@ MySQL;
     protected function command_mcstatus(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = "Sometimes it's Mojang.  [url=http://xpaw.ru/mcstatus/]Have you checked?[/url]";
-        $this->postMessage($message);
-    }
-
-    protected function command_createMineZEvent(Shotbow_ChatBot_User $sender, $arguments)
-    {
-        $message = "No.  That's not how this works.  Staff run events in their spare time.";
         $this->postMessage($message);
     }
 

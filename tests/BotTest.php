@@ -38,28 +38,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\Shotbow_ChatBot_User::class, $users[0]);
     }
 
-    public function testThomasDorland()
-    {
-        $dbh = new PDO();
-
-        $bot = new Bot($dbh);
-
-        $navarr = \Shotbow_ChatBot_User::create(1, 'Navarr');
-        $thomas = \Shotbow_ChatBot_User::create(1669321, 'Thomas_Dorland');
-
-        $messages = $bot->process($navarr, '!startminez');
-
-        $this->assertCount(1, $messages);
-        $navarrs = $messages[0];
-
-        $messages = $bot->process($thomas, '!startminez');
-
-        $this->assertCount(1, $messages);
-        $thomass = $messages[0];
-
-        $this->assertNotEquals($navarrs, $thomass);
-    }
-
     public function testAllCommandsDontError()
     {
         $dbh = new PDO();
