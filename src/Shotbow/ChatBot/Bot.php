@@ -1,6 +1,6 @@
 <?php
 
-require_once(realpath(__DIR__.'/../../../vendor/autoload.php'));
+require_once realpath(__DIR__.'/../../../vendor/autoload.php');
 
 use Cron\CronExpression;
 
