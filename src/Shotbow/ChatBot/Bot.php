@@ -269,6 +269,7 @@ MySQL;
                 'tumblr'     => 'social',
                 'contactus'  => 'contact',
                 'command'    => 'commands',
+                'help'       => 'commands',
 
                 'source'    => 'about',
                 'bugs'      => 'bug',
@@ -276,6 +277,7 @@ MySQL;
                 'address'   => 'ip',
                 'teamspeak' => 'ts',
                 'mumble'    => 'ts',
+                'hacker'    => 'report',
 
                 'test' => 'ping',
             ];
