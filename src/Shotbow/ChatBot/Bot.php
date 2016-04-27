@@ -222,6 +222,7 @@ MySQL;
                 'report'   => [$this, 'command_report'],
                 'staff'    => [$this, 'command_staff'],
                 'social'   => [$this, 'command_social'],
+                'stuck'    => [$this, 'command_stuck'],
                 'about'    => [$this, 'command_about'],
                 'version'  => [$this, 'command_version'],
                 'bug'      => [$this, 'command_bug'],
@@ -407,6 +408,23 @@ MySQL;
     protected function command_staff(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = 'Our wiki contains an [url=https://shotbow.net/forum/wiki/shotbow-staff]official list of staff[/url]';
+        $this->postMessage($message);
+    }
+
+    protected function command_stuck(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = 'Stuck in a block?  Request a move: ';
+        $threads = [
+            'MineZ Classic' => 'https://shotbow.net/forum/threads/stuck-in-a-block-area-post-here.266338/',
+            'MineZ 2'       => 'https://shotbow.net/forum/threads/stuck-in-a-block-post-here.161281/',
+        ];
+
+        $threads = array_map(function($name, $link) {
+            return "[url={$link}]{$name}[/url]";
+        }, array_keys($threads), array_values($threads));
+
+        $message.= implode(', ', $threads);
+
         $this->postMessage($message);
     }
 
