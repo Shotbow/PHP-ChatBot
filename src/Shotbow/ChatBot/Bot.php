@@ -419,11 +419,11 @@ MySQL;
             'MineZ 2'       => 'https://shotbow.net/forum/threads/stuck-in-a-block-post-here.161281/',
         ];
 
-        $threads = array_map(function($name, $link) {
+        $threads = array_map(function ($name, $link) {
             return "[url={$link}]{$name}[/url]";
         }, array_keys($threads), array_values($threads));
 
-        $message.= implode(', ', $threads);
+        $message .= implode(', ', $threads);
 
         $this->postMessage($message);
     }
