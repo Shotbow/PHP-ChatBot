@@ -569,7 +569,7 @@ MySQL;
         $this->postMessage($message);
     }
 
-    protected function command_arrow(Shotbow_Chatbot_User $sender, $arguments)
+    protected function command_arrow(Shotbow_ChatBot_User $sender, $arguments)
     {
         $statement = $this->dbh->query('SELECT url FROM weeklyarrow_published ORDER BY id DESC LIMIT 1');
         $url = $statement->fetchColumn();
