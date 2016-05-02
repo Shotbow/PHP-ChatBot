@@ -111,7 +111,7 @@ class Shotbow_ChatBot_Bot
     private function special_mew(Shotbow_ChatBot_User $sender, $message)
     {
         $searchString = 'mew';
-        if (in_array($sender->getId(), [319, 268, 358, 1723, 327055])
+        if (in_array($sender->getId(), [319, 268, 358, 1723, 1405450, 327055])
             && strtolower(substr($message, 0, strlen($searchString))) == $searchString
         ) {
             $possibleResults = [
