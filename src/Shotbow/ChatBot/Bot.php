@@ -401,7 +401,7 @@ MySQL;
 
     protected function command_report(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = 'To report a malicious player, follow [url=https://shotbow.net/forum/threads/167314/]our Report a Player instructions[/url].  Are they in game right now?  Type /report <name> to report them to our currently active staff!';
+        $message = 'To report a malicious player, follow [url=https://shotbow.net/forum/threads/344869/]our Report a Player instructions[/url].  Are they in game right now?  Type /report <name> to report them to our currently active staff!';
         $this->postMessage($message);
     }
 
