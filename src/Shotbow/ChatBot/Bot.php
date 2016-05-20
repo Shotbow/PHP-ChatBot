@@ -383,7 +383,7 @@ MySQL;
 
     protected function command_banned(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = 'We do not discuss bans in the chatroom.  Please [url=https://shotbow.net/forum/threads/23560/]Post an Appeal[/url].  It is the fastest way to get your ban handled.';
+        $message = 'We do not discuss bans in the chatroom.  Please [url=https://shotbow.net/forum/forums/banappeals/]Post an Appeal[/url].  It is the fastest way to get your ban handled.';
         $this->postMessage($message);
     }
 
