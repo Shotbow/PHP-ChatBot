@@ -580,7 +580,7 @@ MySQL;
 
     protected function command_dj(Shotbow_ChatBot_User $sender, $arguments)
     {
-        $message = "Dubtrack allows you to queue up music and listen to it with friends.  [url=https://www.dubtrack.fm/join/shotbow-dj]Come and join Shotbow's Party![/url]";
+        $message = "Plug.dj allows you to queue up music and listen to it with friends.  [url=https://plug.dj/the-shotbow-network-official]Come and join Shotbow's Party![/url]";
         $this->postMessage($message);
     }
 
