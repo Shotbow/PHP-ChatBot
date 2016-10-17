@@ -486,7 +486,7 @@ MySQL;
     {
         $profileString = $this->getVoteProfileString();
 
-        $message = "[TIP] We need *YOU* to increase network visibility by voting on {$profileString}!  You'll even earn some XP!";
+        $message = "[TIP] We need *YOU* to increase network visibility by voting on {$profileString}!";
 
         $this->postMessage($message);
     }
