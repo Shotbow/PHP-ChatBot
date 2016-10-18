@@ -477,7 +477,7 @@ MySQL;
     {
         $profileString = $this->getVoteProfileString();
 
-        $message = "Vote for our network on {$profileString}.  You'll even earn some XP!";
+        $message = "Vote for our network on {$profileString}.";
 
         $this->postMessage($message);
     }
