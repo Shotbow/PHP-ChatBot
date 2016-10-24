@@ -237,6 +237,8 @@ MySQL;
                 'why'      => [$this, 'command_why'],
                 'math'     => [$this, 'command_math'],
                 'beta'     => [$this, 'command_beta'],
+                'discord'  => [$this, 'command_discord'],
+
             ];
         }
 
@@ -621,6 +623,12 @@ MySQL;
     protected function command_beta(Shotbow_ChatBot_User $sender, $arguments)
     {
         $message = 'Help us test 1.9! Connect to BETA.SHOTBOW.NET and try out our 1.9 gamemodes!';
+        $this->postMessage($message);
+    }
+
+    protected function command_discord(Shotbow_ChatBot_User $sender, $arguments)
+    {
+        $message = '[url=https://discord.gg/shotbow]Join our Discord server![/url]';
         $this->postMessage($message);
     }
 }
